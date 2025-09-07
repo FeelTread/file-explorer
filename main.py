@@ -1,21 +1,22 @@
 import os
 from pathlib import Path
 
-def print_directory_contents(path):
-    for entry in os.scandir(path):
-        if entry.is_dir():
-            print(f"  [DIR] {entry.name}")
-        else:
-            print(f"       {entry.name}")
-    if not any(os.scandir(path)):
-        print("Directory is empty")
-
+def return_directory_contents(path):
+    return [{"name": entry.name, "is_dir": entry.is_dir()} for entry in os.scandir(path)]
 
 home = Path.home()
 current_path = home
 
 while True:
-    print_directory_contents(current_path)
+    dir_contents = return_directory_contents(current_path)
+    if not dir_contents:
+        print("Directory is empty")
+    else:
+        for item in dir_contents:
+            if item["is_dir"]:
+                print(f"  [DIR] {item['name']}")
+            else:
+                print(f"       {item['name']}")
 
     folder = input("select a folder: ")
 
